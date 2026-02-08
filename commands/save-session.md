@@ -1,13 +1,16 @@
 ---
-description: Save a summary of the current session to ~/claude-sessions/
-allowed-tools: Bash(mkdir:*), Write
+description: Save a summary of the current session to Obsidian (or ~/claude-sessions/ as fallback)
+allowed-tools: Bash(mkdir:*), Bash(ls:*), Write
 ---
 
-Create a session summary file and save it to my home directory.
+Create a session summary file, preferring my Obsidian vault.
 
 ## Instructions
 
-1. Create the directory `~/claude-sessions/` if it doesn't exist
+1. **Choose save location:**
+   - If `~/obsidian/pwaddingham/` exists, save to `~/obsidian/pwaddingham/Claude Sessions/`
+   - Otherwise, fall back to `~/claude-sessions/`
+   - Create the target directory if it doesn't exist
 2. Generate a filename using: `session-YYYY-MM-DD-HHMMSS-<context>.md` where `<context>` is:
    - Extract 2-4 keywords from the first user question (lowercase, hyphen-separated, no special chars)
    - Example: "analyze make-rpm script" → `session-2026-01-13-120000-analyze-make-rpm.md`
