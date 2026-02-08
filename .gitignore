@@ -26,4 +26,3 @@ projects/*/agent-*.jsonl
 
 # Agent memory session data
 agent-memory/
-agents/
