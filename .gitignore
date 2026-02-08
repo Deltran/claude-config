@@ -1,0 +1,29 @@
+# Credentials
+.credentials.json
+
+# Ephemeral/cache data
+cache/
+debug/
+downloads/
+file-history/
+history.jsonl
+paste-cache/
+plans/
+session-env/
+shell-snapshots/
+stats-cache.json
+statsig/
+tasks/
+telemetry/
+todos/
+plugins/
+
+# Project session logs (keep memory only)
+projects/*/*.jsonl
+projects/*/sessions-index.json
+projects/*/[0-9a-f]*-*-*-*-*[0-9a-f]
+projects/*/agent-*.jsonl
+
+# Agent memory session data
+agent-memory/
+agents/

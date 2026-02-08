@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true,
+    "vercel@claude-plugins-official": true,
+    "impeccable@impeccable": true
+  }
+}
