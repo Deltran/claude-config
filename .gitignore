@@ -18,10 +18,14 @@ telemetry/
 todos/
 plugins/
 
-# Project data — ignore everything, then un-ignore memory files
-projects/*/
-!projects/*/memory/
-!projects/*/memory/**
+# Per-project memory and session data (may contain sensitive info)
+projects/
 
 # Agent memory session data
 agent-memory/
+
+# Usage analytics / insights reports
+usage-data/
+
+# Local settings (machine-specific)
+settings.local.json
