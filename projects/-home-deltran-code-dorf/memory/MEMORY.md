@@ -48,6 +48,16 @@
 - **Key lesson**: Don't set both a static CSS property AND an animation for the same property — the static value applies first, then animation starts from its 0% keyframe, causing a visible pop.
 - **Key lesson**: Full-screen vignettes should go on `.battle-screen::before` (position: fixed), not on individual sections — avoids overlap/gap issues between sections.
 
+## Admin Tooling / Asset Pipeline (2026-02-11)
+- Sprite inpainting: flatten transparency → Gemini edit → restore transparency
+- ImageMagick endpoints in `vite-plugin-admin.js`: `/__admin/flatten-for-inpaint`, `/__admin/restore-transparency`
+- Frontend helpers in `src/lib/inpaint.js`: `flattenForInpaint`, `restoreTransparency`, `imageUrlToDataUrl`
+- **Key lesson**: Vite asset URLs (e.g. `/assets/foo-abc123.png`) are NOT data URLs. Any function sending image data to the server must convert via `imageUrlToDataUrl()` first. `flattenForInpaint` now does this automatically.
+- **Key lesson**: Mock at I/O boundaries (fetch, fs), not module boundaries. Mocking entire modules hides integration bugs at the seams. The asset-path-vs-data-URL bug slipped through because modal tests mocked all of `inpaint.js`.
+- InpaintCanvas.vue has `image-rendering: pixelated` for crisp pixel art zoom
+- BackgroundAssetModal is the reference implementation for inpaint flows
+- Future: Add Playwright e2e tests for admin tools — would catch URL format mismatches that unit tests miss
+
 ## Design Process Notes
 - Use /dorf-ideation, /dorf-hero-evaluation, /dorf-cynic in parallel for hero design
 - Agents sometimes assume mechanics exist that don't (e.g., baseline crit for Rangers) — always verify against code

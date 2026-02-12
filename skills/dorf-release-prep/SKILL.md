@@ -1,6 +1,6 @@
 ---
 name: dorf-release-prep
-description: Bump version and generate player-friendly changelog from git history. Use when ready to cut a new release.
+description: Bump version, generate player-friendly changelog, build+upload APK, commit and push. Full release pipeline in one shot.
 user_invocable: true
 ---
 
@@ -82,9 +82,20 @@ X.Y.Z
 [previous entries below]
 ```
 
-### 6. Confirm
+### 6. Build and upload APK
 
-Show the user a summary of what was updated and remind them of the remaining release steps:
-- Build the APK
-- Upload APK to Google Drive (overwrite existing)
-- Commit and push (so `version.txt` and `changelog.txt` are live on GitHub for the update checker)
+Run the build alias:
+
+```bash
+build_dorf
+```
+
+This builds the APK and uploads it to Google Drive in one step. Wait for it to complete and confirm success before proceeding.
+
+### 7. Commit and push
+
+Commit all release changes (version bump, changelog, built assets) and push so `version.txt` and `changelog.txt` are live on GitHub for the update checker.
+
+### 8. Confirm
+
+Show the user a summary: new version number, changelog entries, and confirm the build + push succeeded.
