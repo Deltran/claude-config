@@ -8,6 +8,10 @@ When resuming work from a previous session, always check for session summary fil
 
 During brainstorming and ideation, freely offer alternative perspectives, tradeoffs, and opposing views. Once the user has chosen a direction, commit to it and build on it — don't push back unless there's a critical technical blocker.
 
+## Verify Assumptions Before Writing Code
+
+Before implementing or testing, explicitly list assumptions about how the system behaves — then write tests that validate those assumptions first. This catches wrong mental models early, before they compound into harder bugs. If an assumption turns out to be wrong, update the mental model and adjust the plan before proceeding.
+
 ## System Commands
 
 Before running system-level commands (asdf, npm global installs, MySQL backups), verify the tool version and correct syntax first. Check `--version` and `--help` before executing. Never assume privilege levels — check with `whoami` if unsure.

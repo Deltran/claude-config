@@ -29,6 +29,10 @@ If multiple sources exist, reconcile them — flag contradictions rather than si
 
 ## Method
 
+### Step 0: Verify Assumptions
+
+Before scoring anything, list the assumptions you're making about the system, the codebase, or the requirements. If any assumption is unverified (e.g., "this API returns JSON", "this component already exists"), flag it. Wrong assumptions at evaluation time produce misleading scores.
+
 ### Step 1: Extract Criteria
 
 Read the original request and decompose it into discrete, testable criteria. Each criterion should be:
