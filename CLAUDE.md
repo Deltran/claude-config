@@ -18,3 +18,44 @@ Before running system-level commands (asdf, npm global installs, MySQL backups),
 
 ## Custom Commands
 - `pvsync` - Custom file sync command (defined in ~/.zshrc). Replaces the old `lein packetviper watch` workflow.
+
+## Session State Persistence
+
+Periodically write a session state summary to `~/.claude/sessions/{project}/{sessionId}.md` where:
+- `{project}` is the basename of the current working directory (e.g., `dorf`, `clip-editor`). If CWD is `$HOME`, use `home`.
+- `{sessionId}` is your current session ID.
+
+**When to write:**
+- After completing a significant task or milestone
+- Roughly every 15-20 tool calls during active work
+- Before a long chain of subagent dispatches
+- When you notice context is getting large
+
+**What to write** (keep it ~100-200 tokens):
+
+```
+# Session State
+**Project:** {project}
+**Branch:** {current branch}
+**Updated:** {YYYY-MM-DD HH:MM}
+
+## What I'm Doing
+{1-2 sentences about the current task}
+
+## Key Decisions
+{bullet list of important choices made this session}
+
+## Files Touched
+{bullet list of key files modified}
+
+## Blockers / Open
+{anything unresolved}
+
+## Next
+{what comes after current work}
+```
+
+**Do NOT:**
+- Write state on every tool call (too noisy)
+- Include raw tool outputs or file contents
+- Write state for trivial/short sessions (< 5 tool calls)
