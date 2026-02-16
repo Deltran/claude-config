@@ -1,0 +1,5 @@
+# Implementation plan files contain example secret patterns for testing steps
+docs/plans/2026-02-16-secrets-management-impl.md:generic-api-key:612
+docs/plans/2026-02-16-secrets-management-impl.md:generic-api-key:652
+docs/plans/2026-02-16-secrets-management-impl.md:gcp-api-key:531
+docs/plans/2026-02-16-secrets-management-impl.md:gcp-api-key:643

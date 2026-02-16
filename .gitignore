@@ -8,7 +8,7 @@ downloads/
 file-history/
 history.jsonl
 paste-cache/
-plans/
+/plans/
 session-env/
 shell-snapshots/
 stats-cache.json

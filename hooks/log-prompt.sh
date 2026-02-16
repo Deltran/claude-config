@@ -29,6 +29,12 @@ if [ ${#PROMPT} -gt 1000 ]; then
   TRUNCATED="${TRUNCATED}..."
 fi
 
+# Sanitize secrets before writing
+SANITIZER="$HOME/.claude/scripts/sanitize-log.sh"
+if [ -x "$SANITIZER" ]; then
+  TRUNCATED=$(printf '%s' "$TRUNCATED" | "$SANITIZER")
+fi
+
 echo "" >> "$LOG_FILE"
 echo "**$TIME** — $TRUNCATED" >> "$LOG_FILE"
 
