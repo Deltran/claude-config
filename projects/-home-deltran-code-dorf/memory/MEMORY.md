@@ -29,7 +29,7 @@
 - `setActivePinia(createPinia())` in beforeEach for fresh store per test
 - Hero setup: `heroesStore.addHero(id)` → `setPartySlot(0, instanceId)` → `initBattle(null, enemyIds)`
 - Battle hero access: `battleStore.heroes[0]`, enemies: `battleStore.enemies[0]`
-- Skill execution: `battleStore.executeHeroSkill(hero, skill, target)` (exported from store)
+- Skill execution: `selectAction('skill_N')` + `selectTarget(enemyId, 'enemy')` — requires manual setup: push hero/enemy to store arrays, set turnOrder, currentTurnIndex=0, state=BattleState.PLAYER_TURN. No `executeHeroSkill` export exists.
 - Effect checking: `battleStore.hasEffect(unit, type)`, `battleStore.getStacks(unit, type)`
 - Test runner: `npx vitest run` (all) or `npx vitest run path/to/test.js` (specific)
 
@@ -57,6 +57,44 @@
 - InpaintCanvas.vue has `image-rendering: pixelated` for crisp pixel art zoom
 - BackgroundAssetModal is the reference implementation for inpaint flows
 - Future: Add Playwright e2e tests for admin tools — would catch URL format mismatches that unit tests miss
+
+## Title Text Renderer (2026-02-14)
+- Script: `scripts/render-title-text.sh` — renders styled DORF title text as transparent PNG
+- Font: **Cinzel Decorative Bold** (SIL OFL, free for commercial use), installed at `~/.local/share/fonts/cinzel/`
+- Style: dark brown fill + muted gold/amber outline, matching the original `src/assets/dorf-logo-1.png`
+- Usage: `./scripts/render-title-text.sh "TEXT" output.png [font_size] [max_width] [pixel_scale]`
+  - Multi-line: use `\\n` in the string (or `$'...\n...'` syntax)
+  - Defaults: font_size=64, max_width=640, pixel_scale=3
+  - pixel_scale controls chunkiness: 2=fine, 3=default, 4+=blocky
+  - `--smooth` flag skips pixelation for anti-aliased output
+  - Renders at 4x then pixelates down via nearest-neighbor
+- Colors are tunable at the top of the script (FILL_COLOR, OUTLINE_COLOR, SHADOW_COLOR, HIGHLIGHT_COLOR)
+- Summon screen banner size: 640x360 (16:9, displayed at max 360px wide for 2x retina)
+
+## CLI Scripts
+- `npm run sim:region -- list` — list all quest regions
+- `npm run sim:region -- sim "Region Name"` — run combat simulation for a region (all nodes), shows min-clear-level per rarity
+  - `--runs <n>` (default 20) — simulation runs per level search
+  - `--multiplier <n>` (default 1.0) — enemy stat multiplier
+- `npm run adjust:region -- list` — list all quest regions
+- `npm run adjust:region -- preview "Region Name"` — preview stat changes without writing
+- `npm run adjust:region -- apply "Region Name"` — apply stat changes to enemy source files
+  - `-u, --uniform <percent>` — uniform adjustment for all stats (e.g. `--uniform 10` = +10%)
+  - `--hp <percent>`, `--atk <percent>`, `--def <percent>`, `--spd <percent>` — per-stat adjustments
+- Scripts use `register-loader.js` to stub image imports for Node.js ESM
+- Existing asset scripts: `npm run generate-assets`, `npm run generate-battle-backgrounds`, `npm run generate-region-maps`
+
+## Open Bugs
+- **Tavern table/bar micro-jitter**: Tables and bar assets shift ~1px intermittently. Hearth and rug unaffected. Tried: `will-change: transform`, `backface-visibility: hidden`, `box-sizing: border-box`, `border-color: transparent` instead of `border: none` — none fixed it. Likely a deeper sub-pixel rendering issue with CSS `transform: scale()` on the diorama container. Only affects elements with `useTableImg`/`useBarImg`. Needs further investigation.
+- **Hard mode miniboss music**: When hard mode node overrides add extra enemies to formerly-solo miniboss waves (e.g. dire_wolf in forest_02 now has goblin_chieftain + goblin_warrior alongside it), the miniboss music no longer triggers because `isSoloEnemy` is false. All miniboss fights across all regions need the music trigger updated — probably check for presence of a miniboss-flagged enemy in the wave rather than wave size.
+
+## Dev Notes / Backlog
+- **Inventory screen filter**: Add filtering/sorting to the Inventory screen (by item type, rarity, etc.)
+- **Remove enemy tap highlight**: Remove the enemy tap feature that highlights the enemy and displays their name above their head
+- **Map Room "Exploration" text**: The word "Exploration" is too big for the button
+- **Field Guide Status Effects formatting**: Needs a formatting pass
+- **Valinar battle bg**: Use Valinar's battle background as the button background image
+
 
 ## Design Process Notes
 - Use /dorf-ideation, /dorf-hero-evaluation, /dorf-cynic in parallel for hero design

@@ -1,13 +1,15 @@
 ---
 name: dorf-hero-design
-description: Use when brainstorming new Dorf heroes, designing hero kits, or getting feedback on hero/skill designs. Orchestrates ideation, evaluation, and cynic review in parallel.
+description: Use when brainstorming new Dorf heroes, designing hero kits, or getting feedback on hero/skill designs. Orchestrates multi-round deliberation between ideation, evaluation, and cynic agents with conversation logging.
 ---
 
 # Dorf Hero Design
 
 ## Overview
 
-Orchestrates the full hero design workflow by running ideation, evaluation, and cynic review in parallel, then synthesizing results into a design plan.
+Orchestrates a multi-round design conversation between ideation, evaluation, and cynic agents. You are the **orchestrator** — you parse short prompts, run deliberation rounds, break ties, and produce a conversation log + conclusion file.
+
+**Key difference from single-round dispatch:** Agents respond to *each other's* output across rounds. The orchestrator assesses convergence and decides when to stop.
 
 ## Hero Design Rules
 
@@ -18,15 +20,15 @@ Orchestrates the full hero design workflow by running ideation, evaluation, and 
 | Level | Slot |
 |-------|------|
 | 1 | Skill 1 (all heroes) |
-| 1 | Skill 2 (3★+ only) |
+| 1 | Skill 2 (3-star+ only) |
 | 3 | Skill 3 |
 | 6 | Skill 4 |
 | 12 | Skill 5 |
 
 ### Level 1 Usability
 
-- **1-2★ heroes**: Single skill at level 1 — MUST be usable (no passives)
-- **3★+ heroes**: Two skills at level 1 — at least one MUST be usable (max 1 passive)
+- **1-2-star heroes**: Single skill at level 1 — MUST be usable (no passives)
+- **3-star+ heroes**: Two skills at level 1 — at least one MUST be usable (max 1 passive)
 
 ### Passive Limits
 
@@ -40,7 +42,7 @@ Orchestrates the full hero design workflow by running ideation, evaluation, and 
 - Cannot be changed directly via skills
 - Can ONLY be modified through passive abilities
 
-### Leader Skills (5★ Only)
+### Leader Skills (5-star Only)
 
 5-star heroes have a Leader Skill that auto-triggers when conditions are met (hero must be party leader).
 
@@ -49,7 +51,7 @@ Orchestrates the full hero design workflow by running ideation, evaluation, and 
 - **Timed** — Trigger at specific round (e.g., "Round 1: all allies gain +25% ATK for 2 turns")
 - **Passive Regen** — Per-round healing based on each ally's max HP
 
-See existing 5★ heroes for examples: Aurora the Dawn, Shadow King, Yggra, etc.
+See existing 5-star heroes for examples: Aurora the Dawn, Shadow King, Yggra, etc.
 
 ### Critical Hits Don't Exist
 
@@ -69,132 +71,226 @@ There is ONE item in the game that grants crit. Otherwise, **crit is not a mecha
 | **Cleric** | Devotion (MP) | Starts 30%. Skills cost `mpCost`. |
 | **Druid** | Nature (MP) | Starts 30%. Skills cost `mpCost`. |
 
-## When to Use
-
-- Brainstorming 1+ new heroes
-- Designing a hero kit from scratch
-- Getting feedback on new or existing skill designs
-
 ## Workflow
 
 ```dot
 digraph hero_design {
-    "User invokes skill" -> "Gather input";
-    "Gather input" -> "Dispatch parallel agents";
-    "Dispatch parallel agents" -> "dorf-ideation" [style=dashed];
-    "Dispatch parallel agents" -> "dorf-hero-evaluation" [style=dashed];
-    "Dispatch parallel agents" -> "dorf-cynic" [style=dashed];
-    "dorf-ideation" -> "Collect results";
-    "dorf-hero-evaluation" -> "Collect results";
-    "dorf-cynic" -> "Collect results";
-    "Collect results" -> "Synthesize plan";
-    "Synthesize plan" -> "Ask output preference";
-    "Ask output preference" -> "Display in terminal" [label="terminal"];
-    "Ask output preference" -> "Write to file" [label="file"];
+    rankdir=TB;
+    "Parse prompt" -> "Round 1: Opening positions";
+    "Round 1: Opening positions" -> "Assess convergence";
+    "Assess convergence" -> "Round 2: Cross-pollination" [label="open questions"];
+    "Assess convergence" -> "Synthesize + decide" [label="converged"];
+    "Round 2: Cross-pollination" -> "Assess again";
+    "Assess again" -> "Round 3+" [label="unresolved"];
+    "Assess again" -> "Synthesize + decide" [label="decidable"];
+    "Round 3+" -> "Synthesize + decide";
+    "Synthesize + decide" -> "Write conversation log + conclusion";
 }
 ```
 
-## Step 1: Gather Input
+## Step 0: Parse the Prompt
 
-Ask the user:
+Accept short prompts and GO. Do NOT ask clarifying questions unless the prompt is genuinely uninterpretable. Bias toward starting.
 
-1. **Theme/Request**: "What hero or concept do you want to design?"
-   - Could be a class + role ("4-star Ranger tank")
-   - A fantasy archetype ("plague doctor alchemist")
-   - A mechanical hook ("hero that punishes enemy buffs")
-   - Multiple heroes ("fill the 2-star gaps")
+Short prompt examples:
+- `fire duo: 5* summoner, 3* fire brawler` -> Two heroes with specific constraints
+- `fill 2-star gaps` -> Check roster, propose heroes
+- `4* plague doctor alchemist` -> One hero, specific archetype
+- `new 5* that summons a flame elemental` -> One hero, mechanical hook
 
-2. **Output preference**: "Display results in terminal, or write to a markdown file?"
-   - Default: terminal
-   - If file: ask for path or use default `docs/heroes/`
+Extract per hero:
+- **Rarity** (if specified)
+- **Class** (if specified)
+- **Hard requirements** ("must", "has to") vs **soft preferences** ("maybe", "I encourage", "could")
+- **Mechanical hooks** (summoning, transformation, etc.)
+- **Exclusions** (anything the user says to avoid — "no clerics", "no DoT mages", etc.)
 
-## Step 2: Dispatch Parallel Agents
+Pass hard constraints, soft preferences, AND exclusions to all agents, clearly labeled.
 
-Launch three agents simultaneously using the Task tool:
+## Step 1: Round 1 — Opening Positions
 
-### Agent 1: Ideation
-```
-Invoke dorf-ideation skill for: [user's theme]
-Generate ideas at "sketch" depth unless user specified otherwise.
-Return the ideas without writing session files.
-```
+Dispatch three agents **in parallel** using the Task tool.
 
-### Agent 2: Evaluation
-```
-Invoke dorf-hero-evaluation skill.
-Focus evaluation on: [relevant class/role/rarity from theme]
-Check for gaps this hero could fill.
-Return findings without writing session files.
-```
+Each agent prompt MUST include:
+1. The agent's persona and instructions (from its respective skill: dorf-ideation, dorf-cynic, dorf-hero-evaluation)
+2. The parsed design brief with hard vs soft requirements labeled
+3. Instruction to NOT write files — return full output in response
 
-### Agent 3: Cynic
-```
-Invoke dorf-cynic skill.
-As ideas come in, prepare to critique them.
-If reviewing existing designs, critique those.
-Return critique without session files.
-```
+### Ideation Agent
 
-## Step 3: Synthesize Results
+Invoke with dorf-ideation persona. Generate 3-5 concepts per hero at sketch depth. Include one safe bet and one tail idea per hero. Note what new engine work each concept requires.
 
-Combine agent outputs into a coherent design plan:
+### Evaluation Agent
 
-1. **Best ideas** from ideation (filtered by evaluation gaps + cynic feedback)
-2. **Recommended direction** with rationale
-3. **Known risks** surfaced by cynic
-4. **Implementation notes** (new systems needed, effect types, etc.)
+Invoke with dorf-hero-evaluation persona. Analyze roster gaps for the requested rarity/class/role. Provide concrete stat benchmarks and damage/survival targets. Read actual hero roster and enemy data.
 
-### Orchestrator Decision Guidelines
+### Cynic Agent
 
-When synthesizing conflicting feedback or making judgment calls:
+Invoke with dorf-cynic persona. Review the **requirements themselves** before any designs exist. Flag scope risk, engine limitations, "sounds cool but plays badly" traps, inherent balance concerns.
 
-1. **If all else is equal, choose the fun option** — Mechanical elegance matters, but player enjoyment wins ties
-2. **No fan service** — No pandering designs, no waifu/husbando bait, no "cool for cool's sake" without mechanical substance
-3. **Dark fantasy tone** — Dorf is gritty and atmospheric. Heroes can have personality and humor, but the world is dangerous and death is real. Avoid anime tropes, sanitized violence, or overly heroic framing
+## Step 2: Orchestrator Assessment
 
-## Step 4: Output
+After Round 1, assess:
+- Do ideation concepts address evaluation's gaps?
+- Did cynic raise genuine technical blockers?
+- Are there clear winners or does refinement help?
 
-### Terminal Display (default)
-Present synthesis directly in conversation. User can ask follow-up questions.
+If converged or clearly decidable -> skip to Step 5.
+Otherwise -> Round 2.
 
-### File Output
-Write plan to markdown file:
-- Default path: `docs/heroes/{hero-name}-design.md` or `docs/heroes/{date}-design-session.md`
-- Custom path: whatever user specified
+## Step 3: Round 2 — Cross-Pollination
 
-**Plan file structure:**
+Share ALL Round 1 output with all three agents. Each responds to the others.
+
+- **Ideation**: Refine concepts. Drop weak ideas, strengthen promising ones. If cynic raised a valid concern, adapt. If cynic is just pessimistic, push back with reasoning.
+- **Evaluation**: Run preliminary numbers on ideation's top concepts. Flag over/under-tuned kits.
+- **Cynic**: Attack the strongest remaining concepts. Find the degenerate case, the unfun matchup, the new-player confusion trap.
+
+## Step 4: Additional Rounds (if needed)
+
+Round 3+ ONLY if:
+- A fundamental design question is unresolved
+- Cynic raised a technical blocker ideation hasn't addressed
+- Evaluation found numbers that invalidate the direction
+
+**Cap at 4 total rounds.** After that, the orchestrator decides and moves on.
+
+## Step 5: Synthesize — Don't Flatten
+
+Present **2-3 distinct design directions** to the user, not one consensus winner. Each direction should be a complete, viable kit — not a half-baked compromise. The user picks; you don't.
+
+Where agents genuinely agree, note that. Where they disagree, **preserve the disagreement** as separate directions rather than averaging them together. A bold idea and a safe idea are both valid — smashing them into one "medium" idea serves nobody.
+
+### Orchestrator Decision Rules (priority order)
+
+1. **Technical feasibility is a hard gate** — If it genuinely can't work in the engine, say so. Don't force a broken design. But "hard to implement" != "can't work."
+2. **Pick the more engaging option** — Player enjoyment wins ties. Mechanical elegance is secondary to fun.
+3. **No fan service** — No pandering, no "cool for cool's sake" without mechanical substance.
+4. **Dark fantasy tone** — Gritty, atmospheric, dangerous. Personality welcome, anime tropes not.
+
+### Handling Cynic
+
+Cynic will hate ambitious designs. That's the job. Distinguish:
+
+| Cynic Says | Orchestrator Does |
+|------------|-------------------|
+| Genuine engine blocker (can't be built) | Take seriously. Adapt or acknowledge. |
+| "This is complicated" | Not a blocker. Complexity is the cost of novelty. |
+| "Players won't understand" | Evaluate honestly — learnable vs hostile complexity. |
+| Balance concerns with numbers | Feed to evaluation for verification. |
+| Vague doom without specifics | Ignore. |
+
+IF the premise can't work, acknowledge it directly. Don't sugarcoat. But don't let cynic kill exciting designs just because they're ambitious.
+
+## Step 6: Write Output
+
+**Always write BOTH files. Never ask — just do it.**
+
+### Conversation Log
+
+Path: `~/dorf-design-conversations/{date}-{theme-slug}.md`
+
+Create directory if needed.
+
 ```markdown
-# Hero Design: [Name/Theme]
+# Design Conversation: {Theme}
 
 **Date:** YYYY-MM-DD
-**Request:** [Original prompt]
+**Request:** {original user prompt, verbatim}
 
-## Ideas Considered
-[From ideation agent]
+**Parsed Requirements:**
+- Hero 1: {rarity, class, hard constraints, soft preferences}
+- Hero 2: {rarity, class, hard constraints, soft preferences}
 
-## Roster Context
-[From evaluation agent - gaps filled, comparisons]
+---
 
-## Risks & Concerns
-[From cynic agent]
+## Round 1
 
-## Recommended Design
-[Synthesized recommendation]
+### Ideation
+{full agent output}
 
-## Implementation Notes
-[New systems, effect types, data structures needed]
+### Evaluation
+{full agent output}
+
+### Cynic
+{full agent output}
+
+### Orchestrator Notes
+{assessment — what's working, what needs refinement, decisions made}
+
+---
+
+## Round 2
+{same structure}
+
+---
+
+## Resolution
+
+### Decisions Made
+{list of orchestrator decisions with rationale}
+
+### Final Designs
+{summary pointing to conclusion file}
 ```
+
+### Conclusion File
+
+Path: `docs/heroes/{theme-slug}-design.md`
+
+```markdown
+# {Hero Name(s)} Design
+
+**Date:** YYYY-MM-DD
+**Design Session:** ~/dorf-design-conversations/{date}-{theme-slug}.md
+
+## {Hero 1 Name} ({Rarity}-star {Class})
+
+### Concept
+{1-2 paragraph description}
+
+### Role
+{role + what they bring to a party}
+
+### Kit
+| Level | Skill | Type | Description |
+|-------|-------|------|-------------|
+| 1 | Skill 1 | Active | ... |
+| 1 | Skill 2 | Active/Passive | ... |
+| 3 | Skill 3 | ... | ... |
+| 6 | Skill 4 | ... | ... |
+| 12 | Skill 5 | ... | ... |
+
+### Leader Skill (5-star only)
+{name, type, description, effects}
+
+### Balance Notes
+{key numbers from evaluation}
+
+### Known Risks
+{accepted concerns from cynic}
+
+### Implementation Notes
+{new systems, effect types, data structures needed}
+
+---
+
+## {Hero 2 Name} ({Rarity}-star {Class})
+{same structure}
+```
+
+### Terminal Summary
+
+After writing files, display:
+- Hero names + concepts (2-3 sentences each)
+- Key orchestrator decisions and why
+- File paths for conversation log and conclusion
+- Open questions or "if we revisit" notes
 
 ## Feedback Mode
 
-When user asks for feedback on existing designs (not brainstorming new ones):
+When user asks for feedback on existing designs (not brainstorming):
 - Skip ideation agent
-- Run evaluation + cynic on the provided design
-- Default to terminal display
-- User can still request file output with "write that down" or similar
-
-## File Paths
-
-- Default: `docs/heroes/`
-- User can specify any path (including absolute paths like `C:\...`)
-- Create directory if it doesn't exist
+- Run evaluation + cynic (1-2 rounds)
+- Still write conversation log
+- Conclusion file contains revised design recommendations

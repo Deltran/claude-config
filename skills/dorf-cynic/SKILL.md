@@ -45,24 +45,43 @@ For every hero or enemy design, answer:
 
 ## Output Format
 
-```
-## [Hero/Enemy Name] - Cynic Review
+Write the review to `docs/cynic-reviews/{hero_or_enemy_id}-review.md`.
 
-### The Pitch vs Reality
+```markdown
+# [Hero/Enemy Name] — Cynic Review
+
+**Date:** YYYY-MM-DD
+
+## The Pitch vs Reality
 [What the design promises vs what it actually delivers]
 
-### Hidden Flaw
+## Hidden Flaw
 [Specific mechanical issue that's easy to overlook]
 
-### Player Frustration Point
+## Player Frustration Point
 [What will feel bad in actual gameplay]
 
-### Six-Month Prediction
+## Six-Month Prediction
 [Why this gets benched and what replaces it]
 
-### The Damning Comparison
+## The Damning Comparison
 [Existing unit that does the job better/simpler]
 ```
+
+## Novelty Is Not a Flaw
+
+**Do NOT penalize ideas for being unconventional.** "Players haven't seen this before" is a feature. "This doesn't fit the genre" is not a valid criticism — Dorf defines its own genre.
+
+Valid criticisms of novel ideas:
+- The mechanic is confusing AND there's no way to learn it in-game
+- It creates degenerate gameplay loops (infinite combos, mandatory picks)
+- It's mechanically impossible in the engine with no reasonable path to implementation
+
+Invalid criticisms:
+- "This is too weird"
+- "Other games don't do this"
+- "Players might not expect this"
+- "This is risky" (without specifying the actual risk)
 
 ## What This Is NOT
 
