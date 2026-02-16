@@ -33,8 +33,8 @@ OWN_FILE="$SESSION_DIR/$SESSION_ID.md"
 # Create project session dir if it doesn't exist
 mkdir -p "$SESSION_DIR"
 
-# Cleanup: delete files older than 48h
-find "$SESSION_DIR" -name "*.md" -mmin +2880 -delete 2>/dev/null || true
+# Cleanup: delete state files older than 48h
+find "$SESSION_DIR" -type f -name "*.md" -mmin +2880 -delete 2>/dev/null || true
 
 # Collect output
 OUTPUT=""
@@ -67,6 +67,7 @@ if [ "$SOURCE" != "compact" ]; then
 
     while IFS= read -r peer_file; do
       [ -z "$peer_file" ] && continue
+      [ -f "$peer_file" ] || continue  # file may have been deleted since find
       peer_id="$(basename "$peer_file" .md)"
       # Calculate age
       file_age_min=$(( ($(date +%s) - $(stat -c %Y "$peer_file")) / 60 ))
