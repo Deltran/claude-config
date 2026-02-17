@@ -3,6 +3,8 @@ name: local-llm
 description: Use when starting work sessions or tasks that could benefit from local LLM delegation. Checks availability, asks about gaming status, and primes active delegation of simple subtasks to Qwen.
 ---
 
+**Context Marker:** Begin every response with 🤖 to indicate local LLM mode.
+
 # Local LLM Delegation Reminder
 
 ## Purpose

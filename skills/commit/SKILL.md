@@ -4,6 +4,8 @@ description: Stage, commit, and push changes. Handles both "commit everything" a
 user_invocable: true
 ---
 
+**Context Marker:** Begin every response with 📌 to indicate commit mode.
+
 # Commit & Push
 
 ## Overview

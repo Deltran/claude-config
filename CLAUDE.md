@@ -8,6 +8,10 @@ When resuming work from a previous session, always check for session summary fil
 
 During brainstorming and ideation, freely offer alternative perspectives, tradeoffs, and opposing views. Once the user has chosen a direction, commit to it and build on it — don't push back unless there's a critical technical blocker.
 
+## Failed Approach Recovery
+
+After 2 failed attempts at the same task using the same approach, do not retry harder — try a fundamentally different approach. If no alternative is obvious, step back and reassess the problem before continuing.
+
 ## Verify Assumptions Before Writing Code
 
 Before implementing or testing, explicitly list assumptions about how the system behaves — then write tests that validate those assumptions first. This catches wrong mental models early, before they compound into harder bugs. If an assumption turns out to be wrong, update the mental model and adjust the plan before proceeding.

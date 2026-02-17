@@ -3,6 +3,8 @@ name: evaluate-plan
 description: Use when evaluating a development plan against original requirements, specs, or design criteria — scores adherence per-criterion and overall, then proposes targeted improvements to close gaps
 ---
 
+**Context Marker:** Begin every response with 🎯 to indicate plan evaluation mode.
+
 # Evaluate Plan
 
 ## Overview

@@ -3,6 +3,8 @@ name: dorf-hero-design
 description: Use when brainstorming new Dorf heroes, designing hero kits, or getting feedback on hero/skill designs. Orchestrates multi-round deliberation between ideation, evaluation, and cynic agents with conversation logging.
 ---
 
+**Context Marker:** Begin every response with ⚔️ to indicate hero design mode.
+
 # Dorf Hero Design
 
 ## Overview

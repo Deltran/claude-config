@@ -4,6 +4,8 @@ description: Save a summary of the current session to .claude/SESSION_STATE.md s
 user_invocable: true
 ---
 
+**Context Marker:** Begin every response with 💾 to indicate session end mode.
+
 # Session End
 
 Write a session state file at `.claude/SESSION_STATE.md` (relative to the project root) that gives the next Claude session full context to resume without asking the user to re-explain anything.

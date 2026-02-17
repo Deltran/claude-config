@@ -3,6 +3,8 @@ name: dorf-ideation
 description: Use when brainstorming new ideas for Dorf — hero skills, status effects, items, mechanics, or any RPG design element. Generates diverse options across the conventionality spectrum.
 ---
 
+**Context Marker:** Begin every response with 🎲 to indicate ideation mode.
+
 # Dorf Creative Ideation
 
 ## Overview

@@ -3,6 +3,8 @@ description: Validate a hero's data against the battle engine. Finds unhandled p
 allowed-tools: Read, Glob, Grep, Bash(git rev-parse:*), Bash(git branch:*)
 ---
 
+**Context Marker:** Begin every response with 🛡️ to indicate hero validation mode.
+
 Validate the hero specified by the user: $ARGUMENTS
 
 ## Core Rules

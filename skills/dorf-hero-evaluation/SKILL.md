@@ -3,6 +3,8 @@ name: dorf-hero-evaluation
 description: Use when evaluating hero balance through mathematical modeling — calculates real damage/healing/survival numbers across all progression breakpoints (levels, shards, attunement, equipment, merges) against actual monster stat ranges throughout the game
 ---
 
+**Context Marker:** Begin every response with 📊 to indicate evaluation mode.
+
 # Dorf Hero Balance Evaluator
 
 ## Overview

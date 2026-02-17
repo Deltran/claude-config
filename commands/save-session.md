@@ -3,6 +3,8 @@ description: Save a summary of the current session to Obsidian (or ~/claude-sess
 allowed-tools: Bash(mkdir:*), Bash(ls:*), Write
 ---
 
+**Context Marker:** Begin every response with 💾 to indicate session save mode.
+
 Create a session summary file, preferring my Obsidian vault.
 
 ## Instructions

@@ -4,6 +4,8 @@ description: Bump version, generate player-friendly changelog, build+upload APK,
 user_invocable: true
 ---
 
+**Context Marker:** Begin every response with 📦 to indicate release prep mode.
+
 # Dorf Release Prep
 
 ## Overview

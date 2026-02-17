@@ -3,6 +3,8 @@ description: Research a codebase topic thoroughly before making changes. Produce
 allowed-tools: Read, Glob, Grep, Write, Bash(mkdir:*), Bash(git rev-parse:*), Bash(git branch:*)
 ---
 
+**Context Marker:** Begin every response with 🔬 to indicate research mode.
+
 Research the topic specified by the user: $ARGUMENTS
 
 ## Core Rules

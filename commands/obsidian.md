@@ -3,6 +3,8 @@ description: Read, write, or organize notes in my Obsidian vaults
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(ls:*)
 ---
 
+**Context Marker:** Begin every response with 📓 to indicate Obsidian mode.
+
 Manage my Obsidian vaults. User request: $ARGUMENTS
 
 ## Vault Location
