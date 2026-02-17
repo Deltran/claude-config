@@ -86,14 +86,55 @@
 
 ## Open Bugs
 - **Tavern table/bar micro-jitter**: Tables and bar assets shift ~1px intermittently. Hearth and rug unaffected. Tried: `will-change: transform`, `backface-visibility: hidden`, `box-sizing: border-box`, `border-color: transparent` instead of `border: none` — none fixed it. Likely a deeper sub-pixel rendering issue with CSS `transform: scale()` on the diorama container. Only affects elements with `useTableImg`/`useBarImg`. Needs further investigation.
-- **Hard mode miniboss music**: When hard mode node overrides add extra enemies to formerly-solo miniboss waves (e.g. dire_wolf in forest_02 now has goblin_chieftain + goblin_warrior alongside it), the miniboss music no longer triggers because `isSoloEnemy` is false. All miniboss fights across all regions need the music trigger updated — probably check for presence of a miniboss-flagged enemy in the wave rather than wave size.
+
+## Future Features
+- **Colosseum Legends Mode**: Unlocks after bout 50 clear. Endless mode starting at bout 51. Every 10 bouts adds a modifier (enemies start with buffs, heroes start with debuffs, double enemies, all boss waves, etc.). Leaderboard tracks highest bout cleared. Cosmetic rewards every 10 bouts (titles, portrait frames, hero skins — prestige signaling). Turns Colosseum from "beat it once" into "chase the high score" flex zone.
+- **10-pull constellation reveal**: All 10 cards slam down face-down at once, subtle glow hints for high rarity, then cascade flip sorted by rarity (commons first, legendary last). High-rarity cards get dramatic pauses and bigger presentation. Replaces current one-at-a-time tap-to-advance.
+- **Custom 5-star hero reveal animations**: Each 5-star gets a unique spotlight entrance (Aurora descends in light beam, Shadow King emerges from smoke, etc.) instead of generic rarity-scaled template.
+- **Black Market unique ritual**: Distinct summon animation for Black Market pulls (blood sacrifice, shadowy figures, ominous chanting) to make it feel mechanically different from normal altar.
+- **Gem burst on spend**: Gem icons fly from header display toward altar (0.3s) before the ritual animation starts. Makes the spend feel like a sacrifice, not just a number decrement.
+- **World map overview**: Connected region visualization showing how regions relate geographically. Scrollable strip or canvas with regions as connected zones, gray out locked ones. Orientation layer above the node-level maps.
+- **Node challenge system**: Optional per-node objectives (under 5 turns, no deaths, mono-class party) with bonus rewards and completion badges on node markers. Orthogonal to hard mode.
+- **Milestone celebration screens**: Full-screen moments for region clears, super-region unlocks, first GL kill. Reuse HeroSpotlight pattern — flash, badge, reward cascade.
+- **Hard mode persistent toggle + unlock splash**: Move toggle to region list header (always accessible). On first unlock, trigger "Hard Mode Unlocked" full-screen modal explaining the feature.
+- **Battle: Turn order redesign**: Enlarge portraits to 40-48px, move to horizontal strip or "Next 3" compact display. Turn order is strategic core — should be a first-class UI element, not a sidebar detail.
+- **Battle: Status effect hierarchy overhaul**: Sort by type (protection → stat buffs → debuffs → DoTs → control), size by importance, compact+expanded mode. Divine Sacrifice should be HUGE; minor ATK buff can be small.
+- **Battle: Enemy threat assessment system**: Threat auras (red/orange/green glow by danger), mini stat overlays, skill readiness badges. Make threat assessment subconscious instead of requiring long-press inspection.
+- **Battle: Lifesteal particle trail**: Red-to-green particle trail from target to attacker on lifesteal heals. Make it feel vampiric.
+- **Reference: Flatten Codex into tabbed ReferenceScreen**: Major IA restructure — replace Codex → Compendium → sub-screens with a single tabbed Reference screen (Heroes/Enemies/Regions/Field Guide/Logs). Cuts 2 taps from every lookup.
+- **Reference: In-context Field Guide triggers**: Tap status effects in battle → opens Field Guide article. Add ? icons on screens. Make help ambient, not buried.
+- **Reference: Post-battle analysis in Combat Logs**: Damage breakdown, turn efficiency, survivability stats, actionable suggestions ("try bringing a tank"). Turn data into coaching.
+- **Reference: Repeating gem rewards for codex**: Weekly challenges ("Read 10 entries → 50 gems") for re-engagement after initial completion.
+- **Explorations: Rank enhancement narrative framing**: Lore snippets per rank, contextual descriptions instead of bare "+5%". "Scouts have charted safer paths" instead of "+5% reward bonus."
+- **Explorations: Failure states**: 5-10% chance of partial rewards + hero injuries for tension. Party Requests become critical, not just bonus.
+- **Explorations: Home screen mini-expedition cards**: See active expeditions without navigating to full screen. Hero portraits + closest-to-completion node.
+- **Explorations: Flavor text per node**: Single-line atmospheric description on each card. "The caverns whisper secrets to those who dare enter."
+- **Explorations: Route Log narrative system**: 2-3 sentence updates per rank telling a story of the world changing. E→S progression from "Uncharted" to "A pilgrim's road."
+- **Shops: Promote Markets to economy hub**: Move Gem Shop, Laurel Shop, Blacksmith, Dregs Shop off the mega-tab-bar onto Markets as category buttons. Shops becomes a clean 3-tab screen (Gold/Gems/Crest).
+- **Shops: Blacksmith set grouping**: Group equipment by upgrade family (Bronze → Iron → Steel), show all tiers horizontally with owned counts.
+- **Shops: Context-specific purchase modals**: Different modal styling per shop type (Daily Deal header for Gem Shop, set progress for Crimson Forge).
+- **Shops: "Coming Soon" teaser expansion**: Expand beyond Laurel Shop to Crest Shop locked boss sections, Gem Shop rotation previews.
+- **Party: Locked progression preview**: Show preview mockup of what Shards/Attunement do instead of just a lock icon. Taglines like "Turn duplicates into permanent stat boosts."
+- **Party: Consolidate Shards + Attunement**: Single "Hero Enhancement" screen with tabs instead of separate screens.
+- **Party: Merge path silhouettes**: Show merge requirements for heroes you don't own yet — creates aspiration and teaches merge costs.
+- **Heroes: Gear equip animation**: Gear icon flies to slot, slot glows, stats count up with animation.
+- **Heroes: Shard tier upgrade particles**: Shard explodes into particles, tier badge animates (shake + color shift), portrait gets rarity glow.
+- **Heroes: Equipment as separate screen**: Dedicated loadout builder with set bonuses, upgrade paths. Current implementation is buried in detail panel.
+- **Heroes: Two-step hero selection**: Tap to select/highlight, floating "View Details" button, enables multi-select for comparison/bulk operations.
+- **Tavern: Hero roster panel**: Bottom slide-up panel with large tap-friendly hero portraits + event indicators. Diorama becomes decorative, roster becomes functional.
+- **Tavern: Tavern Tales log**: Book icon near help button, stores last 10 resolved events with hero portraits, choice made, outcome. Pure flavor, no mechanical benefit.
+- **Tavern: Celebration state after boss kills**: Special state for ~1 hour after GL clear — more lights, faster tip jar, victory emotes. Dejected state after wipes.
+- **Tavern: Interactive Fellowship Hall**: Tap map table → World Map, weapon rack → Heroes, forge → Fusion, rune circle → Attunement. Trades discoverability for immersion.
+- **Tavern: Hero roles**: Assign heroes to bartender/bouncer/bard roles affecting event types, tip jar rates, mini-narratives.
+- **Home: Party breathing animation**: Subtle parallax or 2-3px vertical shift loop on hero sprites (FF-inspired life).
+- **Home: Party spotlight effect**: Radial gradient stage lighting behind party grid for theatrical framing.
+- **Home: Quick action menu on hero tap**: Tap hero in party preview → equip, level up, swap, view details.
+- **Home: Contextual party naming**: Campaign Party, Boss Party, Arena Party instead of generic Alpha/Bravo/Charlie.
+- **Home: Currency count-up animation**: Animated counter when gem/gold values change (returning from battle, etc.).
 
 ## Dev Notes / Backlog
 - **Inventory screen filter**: Add filtering/sorting to the Inventory screen (by item type, rarity, etc.)
-- **Remove enemy tap highlight**: Remove the enemy tap feature that highlights the enemy and displays their name above their head
-- **Map Room "Exploration" text**: The word "Exploration" is too big for the button
-- **Field Guide Status Effects formatting**: Needs a formatting pass
-- **Valinar battle bg**: Use Valinar's battle background as the button background image
+- **Goods & Markets title on mobile**: Fixed with flex constraints but worth monitoring on smaller screens
 
 
 ## Design Process Notes

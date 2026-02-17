@@ -28,4 +28,13 @@ agent-memory/
 usage-data/
 
 # Local settings (machine-specific)
+settings.json
 settings.local.json
+
+# Tavern bridge artifacts
+tavern-hook.log
+tavern-port
+tavern.log
+
+# Session state files
+sessions/
