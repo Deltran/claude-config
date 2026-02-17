@@ -1,0 +1,29 @@
+[tavern] Starting bridge server on :9876...
+[tavern] Starting Tauri dev...
+
+> claude-tavern@0.1.0 tauri
+> tauri dev
+
+     Running BeforeDevCommand (`npm run dev`)
+        Warn Waiting for your frontend dev server to start on http://localhost:5177/...
+
+> claude-tavern@0.1.0 dev
+> vite dev
+
+Tavern bridge listening on port 9876
+        Warn Waiting for your frontend dev server to start on http://localhost:5177/...
+        Warn Waiting for your frontend dev server to start on http://localhost:5177/...
+        Warn Waiting for your frontend dev server to start on http://localhost:5177/...
+
+  VITE v6.4.1  ready in 19643 ms
+
+  ➜  Local:   http://127.0.0.1:5177/
+     Running DevCommand (`cargo  run --no-default-features --color always --`)
+        Info Watching /home/deltran/code/github/claude-tavern/src-tauri for changes...
+[1m[92m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 11.92s
+[1m[92m     Running[0m `target/debug/claude-tavern`
+
+(claude-tavern:1794671): Gtk-CRITICAL **: 22:39:12.601: gtk_widget_get_scale_factor: assertion 'GTK_IS_WIDGET (widget)' failed
+[tavern] Tauri exited cleanly.
+
+[tavern] Shutting down...

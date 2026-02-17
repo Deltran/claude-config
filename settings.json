@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/deltran/code/claude-tavern/bridge/hooks/tavern-hook.sh",
+            "command": "/home/deltran/code/github/claude-tavern/bridge/hooks/tavern-hook.sh",
             "timeout": 5,
             "async": true
           }
@@ -51,7 +51,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/deltran/code/claude-tavern/bridge/hooks/tavern-hook.sh",
+            "command": "/home/deltran/code/github/claude-tavern/bridge/hooks/tavern-hook.sh",
             "timeout": 5,
             "async": true
           }
@@ -64,7 +64,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/deltran/code/claude-tavern/bridge/hooks/tavern-hook.sh",
+            "command": "/home/deltran/code/github/claude-tavern/bridge/hooks/tavern-hook.sh",
             "timeout": 5,
             "async": true
           }
@@ -77,7 +77,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/deltran/code/claude-tavern/bridge/hooks/tavern-hook.sh",
+            "command": "/home/deltran/code/github/claude-tavern/bridge/hooks/tavern-hook.sh",
             "timeout": 5,
             "async": true
           }
@@ -90,7 +90,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/deltran/code/claude-tavern/bridge/hooks/tavern-hook.sh",
+            "command": "/home/deltran/code/github/claude-tavern/bridge/hooks/tavern-hook.sh",
             "timeout": 5,
             "async": true
           }
