@@ -18,8 +18,14 @@ telemetry/
 todos/
 plugins/
 
-# Per-project memory and session data (may contain sensitive info)
-projects/
+# Per-project data: ignore everything except memory directories
+projects/*
+!projects/*/
+projects/*/*.jsonl
+projects/*/[0-9a-f]*
+# Track memory system files (shared across machines)
+!projects/*/memory/
+!projects/*/memory/**
 
 # Agent memory session data
 agent-memory/

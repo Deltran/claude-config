@@ -11,9 +11,22 @@ if [ -z "$PROMPT" ] || [[ "$PROMPT" == /* ]]; then
   exit 0
 fi
 
+# Skip system-generated messages (task notifications, XML tags)
+if [[ "$PROMPT" == *"<task-notification>"* ]] || \
+   [[ "$PROMPT" == *"<task-id>"* ]] || \
+   [[ "$PROMPT" == *"<system-reminder>"* ]] || \
+   [[ "$PROMPT" == *"<tool-use-id>"* ]] || \
+   [[ "$PROMPT" == *"<output-file>"* ]] || \
+   [[ "$PROMPT" == *"<status>"* ]] || \
+   [[ "$PROMPT" == *"<summary>"* ]] || \
+   [[ "$PROMPT" == *"Read the output file to retrieve"* ]]; then
+  exit 0
+fi
+
 DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H:%M)
-LOG_DIR="$HOME/.claude/logs"
+HOSTNAME=$(hostname)
+LOG_DIR="$HOME/.claude/logs/$HOSTNAME"
 LOG_FILE="$LOG_DIR/$DATE.md"
 
 mkdir -p "$LOG_DIR"
